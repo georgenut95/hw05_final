@@ -186,18 +186,19 @@ class TestStringMethods(TestCase):
                 }
             )
         )
-        self.sub_count = Follow.objects.filter(
+        sub_count = Follow.objects.filter(
             user=self.user,
             author=author
         ).count()
+        return sub_count
 
     def test_following(self):
         self.client.force_login(self.user)
         author = User.objects.create_user(username="vanya666")
-        self.following("profile_follow", author)
-        self.assertEqual(self.sub_count, 1)
-        self.following("profile_unfollow", author)
-        self.assertEqual(self.sub_count, 0)
+        sub_count = self.following("profile_follow", author)
+        self.assertEqual(sub_count, 1)
+        sub_count = self.following("profile_unfollow", author)
+        self.assertEqual(sub_count, 0)
 
     def test_read_starred_authors(self):
         self.client.force_login(self.user)
